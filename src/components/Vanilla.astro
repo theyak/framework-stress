@@ -1,0 +1,66 @@
+---
+const { longList } = Astro.props;
+const lots = [...Array(30000).keys()];
+---
+
+<h1>
+  Vanilla
+  <span id="counter"></span>
+</h1>
+<ul id="tokens"></ul>
+<div id="lots">
+  {
+    longList &&
+      lots.map((i) => {
+        return <div>{i}</div>;
+      })
+  }
+</div>
+<div id="lots-o-numbers"></div>
+
+<script>
+  const text = [];
+  const counter = document.getElementById("counter");
+  const tokens = document.getElementById("tokens");
+  const endAt = Date.now() + 10000;
+
+  let count = 0;
+
+  const token = () => Math.random().toString(36).substring(2, 10);
+  const textNodes = [];
+  const countText = document.createTextNode("0");
+  counter.appendChild(countText);
+
+  function create() {
+    const ul = tokens;
+    for (let i = 0; i < 500; i++) {
+      const li = document.createElement("li");
+      text[i] = token();
+      textNodes[i] = document.createTextNode(text[i]);
+      li.appendChild(textNodes[i]);
+      ul.appendChild(li);
+    }
+  }
+
+  function paint() {
+    countText.data = "" + count;
+    for (let i = 0; i < 500; i++) {
+      textNodes[i].data = text[i];
+    }
+    requestAnimationFrame(paint);
+  }
+
+  function go() {
+    count++;
+    for (let i = 0; i < 500; i++) {
+      text[i] = token();
+    }
+
+    if (Date.now() < endAt) {
+      setTimeout(() => go(), 1);
+    }
+  }
+  create();
+  go();
+  requestAnimationFrame(paint);
+</script>

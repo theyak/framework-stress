@@ -1,0 +1,240 @@
+---
+---
+
+<script>
+  import {
+    SvelteComponentDev,
+    add_location,
+    append_dev,
+    attr_dev,
+    destroy_each,
+    detach_dev,
+    dispatch_dev,
+    element,
+    init,
+    insert_dev,
+    noop,
+    safe_not_equal,
+    set_data_dev,
+    space,
+    text,
+    validate_each_argument,
+    validate_slots,
+  } from "svelte/internal";
+
+  import { onMount } from "svelte";
+  const file = "App.svelte";
+
+  function get_each_context(ctx, list, i) {
+    const child_ctx = ctx.slice();
+    child_ctx[4] = list[i];
+    child_ctx[6] = i;
+    return child_ctx;
+  }
+
+  // (31:1) {#each list as item, i}
+  function create_each_block(ctx) {
+    let li;
+    let t_value = /*item*/ ctx[4].name + "";
+    let t;
+    let li_key_value;
+
+    const block = {
+      c: function create() {
+        li = element("li");
+        t = text(t_value);
+        attr_dev(li, "key", (li_key_value = /*i*/ ctx[6]));
+        add_location(li, file, 31, 2, 531);
+      },
+      m: function mount(target, anchor) {
+        insert_dev(target, li, anchor);
+        append_dev(li, t);
+      },
+      p: function update(ctx, dirty) {
+        if (
+          dirty & /*list*/ 2 &&
+          t_value !== (t_value = /*item*/ ctx[4].name + "")
+        )
+          set_data_dev(t, t_value);
+      },
+      d: function destroy(detaching) {
+        if (detaching) detach_dev(li);
+      },
+    };
+
+    dispatch_dev("SvelteRegisterBlock", {
+      block,
+      id: create_each_block.name,
+      type: "each",
+      source: "(31:1) {#each list as item, i}",
+      ctx,
+    });
+
+    return block;
+  }
+
+  function create_fragment(ctx) {
+    let h1;
+    let t0;
+    let t1;
+    let t2;
+    let t3;
+    let ul;
+    let each_value = /*list*/ ctx[1];
+    validate_each_argument(each_value);
+    let each_blocks = [];
+
+    for (let i = 0; i < each_value.length; i += 1) {
+      each_blocks[i] = create_each_block(get_each_context(ctx, each_value, i));
+    }
+
+    const block = {
+      c: function create() {
+        h1 = element("h1");
+        t0 = text("Svelte (");
+        t1 = text(/*count*/ ctx[0]);
+        t2 = text(")");
+        t3 = space();
+        ul = element("ul");
+
+        for (let i = 0; i < each_blocks.length; i += 1) {
+          each_blocks[i].c();
+        }
+
+        add_location(h1, file, 28, 0, 473);
+        add_location(ul, file, 29, 0, 499);
+      },
+      l: function claim(nodes) {
+        throw new Error(
+          "options.hydrate only works if the component was compiled with the `hydratable: true` option"
+        );
+      },
+      m: function mount(target, anchor) {
+        insert_dev(target, h1, anchor);
+        append_dev(h1, t0);
+        append_dev(h1, t1);
+        append_dev(h1, t2);
+        insert_dev(target, t3, anchor);
+        insert_dev(target, ul, anchor);
+
+        for (let i = 0; i < each_blocks.length; i += 1) {
+          each_blocks[i].m(ul, null);
+        }
+      },
+      p: function update(ctx, [dirty]) {
+        if (dirty & /*count*/ 1) set_data_dev(t1, /*count*/ ctx[0]);
+
+        if (dirty & /*list*/ 2) {
+          each_value = /*list*/ ctx[1];
+          validate_each_argument(each_value);
+          let i;
+
+          for (i = 0; i < each_value.length; i += 1) {
+            const child_ctx = get_each_context(ctx, each_value, i);
+
+            if (each_blocks[i]) {
+              each_blocks[i].p(child_ctx, dirty);
+            } else {
+              each_blocks[i] = create_each_block(child_ctx);
+              each_blocks[i].c();
+              each_blocks[i].m(ul, null);
+            }
+          }
+
+          for (; i < each_blocks.length; i += 1) {
+            each_blocks[i].d(1);
+          }
+
+          each_blocks.length = each_value.length;
+        }
+      },
+      i: noop,
+      o: noop,
+      d: function destroy(detaching) {
+        if (detaching) detach_dev(h1);
+        if (detaching) detach_dev(t3);
+        if (detaching) detach_dev(ul);
+        destroy_each(each_blocks, detaching);
+      },
+    };
+
+    dispatch_dev("SvelteRegisterBlock", {
+      block,
+      id: create_fragment.name,
+      type: "component",
+      source: "",
+      ctx,
+    });
+
+    return block;
+  }
+
+  function instance($$self, $$props, $$invalidate) {
+    let { $$slots: slots = {}, $$scope } = $$props;
+    validate_slots("App", slots, []);
+    const endAt = Date.now() + 10000;
+    const token = () => Math.random().toString(36).substring(2, 10);
+    let count = 0;
+    let list = [];
+
+    for (let i = 0; i < 5; i++) {
+      list.push({ name: token(), id: i });
+    }
+
+    onMount(() => {
+      const go = () => {
+        list.forEach((item) => {
+          item.name = token();
+        });
+
+        $$invalidate(1, list);
+        $$invalidate(0, count++, count);
+
+        if (Date.now() < endAt) {
+          setTimeout(() => go(), 1);
+        }
+      };
+
+      go();
+    });
+
+    const writable_props = [];
+
+    Object.keys($$props).forEach((key) => {
+      if (
+        !~writable_props.indexOf(key) &&
+        key.slice(0, 2) !== "$$" &&
+        key !== "slot"
+      )
+        console.warn(`<App> was created with unknown prop '${key}'`);
+    });
+
+    $$self.$capture_state = () => ({ onMount, endAt, token, count, list });
+
+    $$self.$inject_state = ($$props) => {
+      if ("count" in $$props) $$invalidate(0, (count = $$props.count));
+      if ("list" in $$props) $$invalidate(1, (list = $$props.list));
+    };
+
+    if ($$props && "$$inject" in $$props) {
+      $$self.$inject_state($$props.$$inject);
+    }
+
+    return [count, list];
+  }
+
+  class App extends SvelteComponentDev {
+    constructor(options) {
+      super(options);
+      init(this, options, instance, create_fragment, safe_not_equal, {});
+
+      dispatch_dev("SvelteRegisterComponent", {
+        component: this,
+        tagName: "App",
+        options,
+        id: create_fragment.name,
+      });
+    }
+  }
+  new App({});
+</script>
