@@ -12,6 +12,7 @@ for (let i = 0; i < 500; i++) {
 
 const ListingMemoized = React.memo(() => (
   <div>
+    <div>Memoized</div>
     {lots.map((i, j) => {
       return <div key={i}>{i}</div>;
     })}
@@ -20,6 +21,7 @@ const ListingMemoized = React.memo(() => (
 
 const Listing = () => (
   <div>
+    <div>Not Memoized</div>
     {lots.map((i, j) => {
       return <div key={i}>{i}</div>;
     })}
@@ -61,7 +63,9 @@ function App({ longList }) {
 
   return (
     <>
-      <h1>React ({count})</h1>
+      <h1>
+        React v{React.version} ({count})
+      </h1>
       <div style={{ marginBottom: "1em" }}>
         <label style={{ cursor: "pointer" }}>
           <input type="checkbox" onChange={onMemo}></input>
