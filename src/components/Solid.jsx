@@ -1,4 +1,4 @@
-import { Index, onMount, createSignal, batch } from "solid-js";
+import { Index, onMount, createSignal, createMemo, batch } from "solid-js";
 
 const endAt = Date.now() + 10000;
 const token = () => Math.random().toString(36).substring(2, 10);
@@ -11,22 +11,17 @@ const [count, setCount] = createSignal(0);
 
 const lots = [...Array(30000).keys()];
 
-// Note: Using For was significantly slower
-// <For each={lots}>
-//   {(i) => {
-//     return <div>{i}</div>;
-//   }}
-// </For>
-
-function List() {
+const List = createMemo(function () {
   return (
     <div>
-      {lots.map((i) => {
-        <div>{i}</div>;
-      })}
+      <For each={lots}>
+        {(i) => {
+          return <div>{i}</div>;
+        }}
+      </For>
     </div>
   );
-}
+});
 
 function Solid(props) {
   onMount(() => {
@@ -36,7 +31,6 @@ function Solid(props) {
         newList.push({ name: token, id: i });
       }
 
-      // batch doesn't really make a difference. Just using it for fun.
       batch(() => {
         setList(newList);
         setCount((c) => c + 1);
