@@ -4,6 +4,7 @@ let endAt = Date.now() + 10000;
 const token = () => Math.random().toString(36).substring(2, 10);
 const lots = [...Array(30000).keys()];
 let running = true;
+let timeout = null;
 
 const initialList = [];
 for (let i = 0; i < 500; i++) {
@@ -34,13 +35,16 @@ function App({ longList }) {
   const [memo, setMemo] = useState(false);
 
   const onMemo = useCallback((e) => {
-    setCounter(0);
     setMemo(e.target.checked);
-    endAt = Date.now() + 10000;
-    if (!running) {
-      running = true;
-      setTimeout(() => go(), 1);
+  }, []);
+
+  const onRun = useCallback((e) => {
+    setCounter(0);
+    if (timeout) {
+      clearTimeout(timeout);
     }
+    endAt = Date.now() + 10000;
+    timeout = setTimeout(go, 1);
   }, []);
 
   const go = () => {
@@ -50,16 +54,14 @@ function App({ longList }) {
     });
     setList(newList);
     setCounter((c) => c + 1);
+
     if (Date.now() < endAt) {
-      setTimeout(go, 1);
+      timeout = setTimeout(go, 1);
     } else {
-      running = false;
+      clearTimeout(timeout);
+      timeout = null;
     }
   };
-
-  useEffect(() => {
-    go();
-  }, []);
 
   return (
     <>
@@ -72,6 +74,9 @@ function App({ longList }) {
           Use Memo
         </label>
       </div>
+      <button style={{ marginBottom: "1em" }} onClick={onRun}>
+        Run!
+      </button>
       <ul>
         {list.map((item) => (
           <li key={item.id}>{item.name}</li>

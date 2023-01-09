@@ -4,9 +4,11 @@ const lots = [...Array(30000).keys()];
 ---
 
 <h1>
-  Vanilla
-  <span id="counter"></span>
+  Vanilla (<span id="counter"></span>)
 </h1>
+
+<button id="run" style="margin-bottom: 1em">Run!</button>
+
 <ul id="tokens"></ul>
 <div id="lots">
   {
@@ -25,11 +27,23 @@ const lots = [...Array(30000).keys()];
   let endAt = Date.now() + 10000;
 
   let count = 0;
+  let timeout = null;
 
   const token = () => Math.random().toString(36).substring(2, 10);
   const textNodes = [];
   const countText = document.createTextNode("0");
   counter.appendChild(countText);
+
+  document.getElementById("run").addEventListener("click", onRun);
+
+  function onRun() {
+    if (timeout) {
+      clearTimeout(timeout);
+    }
+    count = 0;
+    endAt = Date.now() + 10000;
+    timeout = setTimeout(go, 1);
+  }
 
   function create() {
     const ul = tokens;
@@ -57,14 +71,12 @@ const lots = [...Array(30000).keys()];
     }
 
     if (Date.now() < endAt) {
-      setTimeout(go, 1);
+      timeout = setTimeout(go, 1);
+    } else {
+      clearTimeout(timeout);
+      timeout = null;
     }
   }
-
-  setTimeout(() => {
-    endAt = Date.now() + 10000;
-    go();
-  }, 2000);
 
   create();
   requestAnimationFrame(paint);
