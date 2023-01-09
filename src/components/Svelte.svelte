@@ -1,12 +1,10 @@
 <script>
-	import { onMount } from 'svelte';
+	import { onMount, tick } from 'svelte';
+	import List from "./List.svelte";
 
-	export let longList = false;
-
-	const endAt = Date.now() + 10000;
+	export let longList = true;
 
 	const token = () => Math.random().toString(36).substring(2, 10);
-	const lots = [...Array(30000).keys()];
 	let count = 0;
 	let list = [];
 
@@ -15,16 +13,18 @@
 	}
 
 	onMount(() => {
-		const go = () => {
+		const go = async () => {
 			list.forEach((item, i) => {
 				item.name = token()
 			});
 			list = list;
 			count++;
 			if (Date.now() < endAt) {
-				setTimeout(() => go(), 1);
+				setTimeout(go, 1);
 			}
 		}
+
+		let endAt = Date.now() + 10000;
 		go();
 	});
 </script>
@@ -37,9 +37,5 @@
 </ul>
 
 {#if longList}
-	<div>
-		{#each lots as i}
-			<div key={i}>{i}</div>
-		{/each}
-	</div>
+	<List />
 {/if}

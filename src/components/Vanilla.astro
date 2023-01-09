@@ -22,7 +22,7 @@ const lots = [...Array(30000).keys()];
   const text = [];
   const counter = document.getElementById("counter");
   const tokens = document.getElementById("tokens");
-  const endAt = Date.now() + 10000;
+  let endAt = Date.now() + 10000;
 
   let count = 0;
 
@@ -57,10 +57,15 @@ const lots = [...Array(30000).keys()];
     }
 
     if (Date.now() < endAt) {
-      setTimeout(() => go(), 1);
+      setTimeout(go, 1);
     }
   }
+
+  setTimeout(() => {
+    endAt = Date.now() + 10000;
+    go();
+  }, 2000);
+
   create();
-  go();
   requestAnimationFrame(paint);
 </script>
