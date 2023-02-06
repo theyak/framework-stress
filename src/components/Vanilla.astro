@@ -21,6 +21,7 @@ const lots = [...Array(30000).keys()];
 <div id="lots-o-numbers"></div>
 
 <script>
+(function () {
   const text = [];
   const counter = document.getElementById("counter");
   const tokens = document.getElementById("tokens");
@@ -80,4 +81,5 @@ const lots = [...Array(30000).keys()];
 
   create();
   requestAnimationFrame(paint);
+})();
 </script>
