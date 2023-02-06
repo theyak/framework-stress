@@ -4,6 +4,7 @@ import React from "../components/React.jsx";
 import Svelte from "../components/Svelte.svelte";
 import Solid from "../components/Solid.jsx";
 import Vanilla from "../components/Vanilla.astro";
+import Ractive from "../components/Ractive.astro";
 import Vue from "../components/Vue.vue";
 
 export function getStaticPaths() {
@@ -13,6 +14,7 @@ export function getStaticPaths() {
     { params: { type: "svelte" } },
     { params: { type: "vue" } },
     { params: { type: "vanilla" } },
+    { params: { type: "ractive" } },
   ];
 }
 const { type } = Astro.params;
@@ -27,5 +29,6 @@ const longList = true;
     {type === "svelte" && <Svelte client:only="svelte" longList={longList} />}
     {type === "solid" && <Solid client:only="solid" longList={longList} />}
     {type === "vanilla" && <Vanilla longList={longList} />}
+    {type === "ractive" && <Ractive longList={longList} />}
   </main>
 </Layout>

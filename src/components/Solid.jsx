@@ -11,7 +11,7 @@ const [count, setCount] = createSignal(0);
 
 const lots = [...Array(30000).keys()];
 
-const List = createMemo(function () {
+const List = function () {
   return (
     <div>
       <For each={lots}>
@@ -21,7 +21,7 @@ const List = createMemo(function () {
       </For>
     </div>
   );
-});
+};
 
 function Solid(props) {
   onMount(() => {
