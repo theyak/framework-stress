@@ -20,11 +20,11 @@ const lots = [...Array(30000).keys()];
 </div>
 <div id="lots-o-numbers"></div>
 
-<script>
+<script is:inline>
 (function () {
-  if (window.location.href.indexOf("vanilla") < 0) {
-    return;
-  }
+  // if (window.location.href.indexOf("vanilla") < 0) {
+  //   return;
+  // }
 
   const text = [];
   const counter = document.getElementById("counter");
