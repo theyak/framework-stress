@@ -20,5 +20,5 @@ import alpinejs from "@astrojs/alpinejs";
 
 // https://astro.build/config
 export default defineConfig({
-  integrations: [react(), svelte(), vue(), solidJs(), lit(), alpinejs()]
+  integrations: [react(), svelte(), vue(), solidJs(), lit(), alpinejs()],
 });
