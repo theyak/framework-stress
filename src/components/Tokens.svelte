@@ -24,14 +24,14 @@
 		count++;
 
 		if (Date.now() < endAt) {
-			setTimeout(go);
+			requestAnimationFrame(go);
 		}
 	};
 
 	const start = () => {
 		endAt = Date.now() + 10000;
 		count = 0;
-		go();
+		requestAnimationFrame(go);
 	}
 </script>
 
