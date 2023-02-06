@@ -22,6 +22,10 @@ const lots = [...Array(30000).keys()];
 
 <script>
 (function () {
+  if (window.location.href.indexOf("vanilla") < 0) {
+    return;
+  }
+
   const text = [];
   const counter = document.getElementById("counter");
   const tokens = document.getElementById("tokens");

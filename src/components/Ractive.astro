@@ -4,76 +4,81 @@
 <div id="lots-o-numbers"></div>
 
 <script>
-
-let ractive;
-let endAt;
-let count = 0;
-
-const token = () => Math.random().toString(36).substring(2, 10);
-
-const getTokenList = () => {
-	const tokens = [];
-	for (let i = 0; i < 500; i++) {
-		tokens.push({name: token(), id: i});
+(function () {
+	if (window.location.href.indexOf("ractive") < 0) {
+		return;
 	}
-	return tokens;
-}
-const tokens = getTokenList();
 
-const tpl = `
-<h1>
-  Ractive (<span id="counter">{{count}}</span>)
-</h1>
+	let ractive;
+	let endAt;
+	let count = 0;
 
-<button style="display:block; margin-bottom: 1em" on-click="@this.fire('start')">
-	Run!
-</button>
+	const token = () => Math.random().toString(36).substring(2, 10);
 
-<ul>
-	{{#each tokens}}
-		<li class="item">{{name}}</li>
-	{{/each}}
-</ul>
-`;
-
-const go = () => {
-  if (ractive) {
-	tokens.forEach((item, i) => {
-		item.name = token();
-		// Uncomment below if you want to set each token individually
-		// ractive.set(`tokens[${i}].name`, token());
-	})
-
-    ractive.set("tokens", tokens);
-    ractive.set("count", count++);
-  }
-
-  if (Date.now() < endAt) {
-    setTimeout(() => go(), 1);
-  }
-};
-
-ractive = new Ractive({
-	target: document.getElementById("page"),
-	template: tpl,
-	data: {
-		count: 0,
-		tokens,
+	const getTokenList = () => {
+		const tokens = [];
+		for (let i = 0; i < 500; i++) {
+			tokens.push({name: token(), id: i});
+		}
+		return tokens;
 	}
-});
+	const tokens = getTokenList();
 
-ractive.on("start", function () {
-	count = 0;
-	ractive.set("count", 0);
-	endAt = Date.now() + 10000;
-	go();
-});
+	const tpl = `
+	<h1>
+	Ractive (<span id="counter">{{count}}</span>)
+	</h1>
 
-new Ractive({
-	target: document.getElementById("lots-o-numbers"),
-	template: `{{#each lots}}<div>{{this}}</div>{{/each}}`,
-	data: {
-		lots: [...Array(30000).keys()]
+	<button style="display:block; margin-bottom: 1em" on-click="@this.fire('start')">
+		Run!
+	</button>
+
+	<ul>
+		{{#each tokens}}
+			<li class="item">{{name}}</li>
+		{{/each}}
+	</ul>
+	`;
+
+	const go = () => {
+	if (ractive) {
+		tokens.forEach((item, i) => {
+			item.name = token();
+			// Uncomment below if you want to set each token individually
+			// ractive.set(`tokens[${i}].name`, token());
+		})
+
+		ractive.set("tokens", tokens);
+		ractive.set("count", count++);
 	}
-});
+
+	if (Date.now() < endAt) {
+		setTimeout(() => go(), 1);
+	}
+	};
+
+	ractive = new Ractive({
+		target: document.getElementById("page"),
+		template: tpl,
+		data: {
+			count: 0,
+			tokens,
+		}
+	});
+
+	ractive.on("start", function () {
+		count = 0;
+		ractive.set("count", 0);
+		endAt = Date.now() + 10000;
+		go();
+	});
+
+	new Ractive({
+		target: document.getElementById("lots-o-numbers"),
+		template: `{{#each lots}}<div>{{this}}</div>{{/each}}`,
+		data: {
+			lots: [...Array(30000).keys()]
+		}
+	});
+})();
 </script>
