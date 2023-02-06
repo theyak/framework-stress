@@ -29,8 +29,5 @@
     "solid-js": "^1.6.6",
     "svelte": "^3.55.0",
     "vue": "^3.2.45"
-  },
-  "devDependencies": {
-    "ractive": "^1.4.1"
   }
 }
