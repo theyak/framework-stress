@@ -1,6 +1,12 @@
 ---
+const lots = [...Array(30000).keys()];
 ---
 <div id="page"></div>
+{
+	lots.map((i) => {
+		return <div>{i}</div>;
+	})
+}
 <div id="lots-o-numbers"></div>
 <script is:inline src="/ractive.js"></script>
 
@@ -69,12 +75,12 @@ ractive.on("start", function () {
 	go();
 });
 
-new Ractive({
-	target: document.getElementById("lots-o-numbers"),
-	template: `{{#each lots}}<div>{{this}}</div>{{/each}}`,
-	data: {
-		lots: [...Array(30000).keys()]
-	}
-});
+// new Ractive({
+// 	target: document.getElementById("lots-o-numbers"),
+// 	template: `{{#each lots}}<div>{{this}}</div>{{/each}}`,
+// 	data: {
+// 		lots: [...Array(30000).keys()]
+// 	}
+// });
 
 </script>

@@ -10,15 +10,12 @@ const lots = [...Array(30000).keys()];
 <button id="run" style="margin-bottom: 1em">Run!</button>
 
 <ul id="tokens"></ul>
-<div id="lots">
-  {
-    longList &&
-      lots.map((i) => {
-        return <div>{i}</div>;
-      })
-  }
-</div>
-<div id="lots-o-numbers"></div>
+{
+  longList &&
+    lots.map((i) => {
+      return <div>{i}</div>;
+    })
+}
 
 <script is:inline>
 (function () {

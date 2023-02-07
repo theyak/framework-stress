@@ -13,13 +13,13 @@ const lots = [...Array(30000).keys()];
 
 const List = function () {
   return (
-    <div>
+    <>
       <For each={lots}>
         {(i) => {
           return <div>{i}</div>;
         }}
       </For>
-    </div>
+    </>
   );
 };
 
@@ -37,7 +37,7 @@ function Solid(props) {
       });
 
       if (Date.now() < endAt) {
-        setTimeout(() => go(), 1);
+        setTimeout(go);
       }
     };
 

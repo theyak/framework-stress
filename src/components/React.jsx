@@ -12,21 +12,21 @@ for (let i = 0; i < 500; i++) {
 }
 
 const ListingMemoized = React.memo(() => (
-  <div>
+  <>
     <div>Memoized</div>
     {lots.map((i, j) => {
       return <div key={i}>{i}</div>;
     })}
-  </div>
+  </>
 ));
 
 const Listing = () => (
-  <div>
+  <>
     <div>Not Memoized</div>
     {lots.map((i, j) => {
       return <div key={i}>{i}</div>;
     })}
-  </div>
+  </>
 );
 
 function App({ longList }) {
